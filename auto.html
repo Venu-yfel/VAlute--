@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Auto-Trading | VAlute</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+    }
+
+    header {
+      background: #1e3c72;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      height: 50px;
+      filter: drop-shadow(0 0 5px #00e0ff);
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover, nav a.active {
+      color: #00e0ff;
+      text-decoration: underline;
+    }
+
+    .container {
+      padding: 30px 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 34px;
+      margin-bottom: 20px;
+      color: #00e0ff;
+      text-shadow: 0 0 8px #00e0ff;
+    }
+
+    .bots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    .bot-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,224,255,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .bot-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 25px #00e0ff;
+    }
+
+    .bot-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .bot-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: #00e0ff;
+      text-shadow: 0 0 6px #00bcd4;
+    }
+
+    .bot-status {
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: #0f2027;
+    }
+
+    .bot-status.running {
+      background-color: #00e676;
+      box-shadow: 0 0 8px #00e676;
+    }
+
+    .bot-status.paused {
+      background-color: #ffab00;
+      box-shadow: 0 0 8px #ffab00;
+    }
+
+    .bot-info p {
+      margin: 6px 0;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .bot-toggle {
+      margin-top: 15px;
+      align-self: flex-start;
+    }
+
+    .toggle {
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+      position: relative;
+    }
+
+    .toggle input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #555;
+      border-radius: 26px;
+      transition: 0.4s;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .toggle input:checked + .slider {
+      background-color: #00e0ff;
+      box-shadow: 0 0 10px #00e0ff;
+    }
+
+    .toggle input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .new-bot-form {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,224,255,0.25);
+      max-width: 600px;
+      margin: 0 auto 60px auto;
+    }
+
+    .new-bot-form h2 {
+      color: #00e0ff;
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 0 7px #00bcd4;
+    }
+
+    .new-bot-form label {
+      font-weight: 600;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 6px;
+    }
+
+    .new-bot-form input,
+    .new-bot-form select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
+      transition: background-color 0.3s;
+    }
+
+    .new-bot-form input::placeholder {
+      color: #ccc;
+    }
+
+    .new-bot-form input:focus,
+    .new-bot-form select:focus {
+      background-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 10px #00e0ff;
+    }
+
+    .new-bot-form button {
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 18px;
+      border-radius: 10px;
+      margin-top: 30px;
+      cursor: pointer;
+      font-weight: 700;
+      width: 100%;
+      box-shadow: 0 0 15px #00bcd4;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .new-bot-form button:hover {
+      background-color: #009fb3;
+      box-shadow: 0 0 20px #009fb3;
+    }
+
+    .stats-section {
+      max-width: 1200px;
+      margin: 0 auto 60px auto;
+      padding: 0 50px;
+    }
+
+    .stats-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .stat-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 0 20px rgba(0,224,255,0.2);
+      text-align: center;
+      color: #00e0ff;
+      font-weight: 700;
+      font-size: 22px;
+      text-shadow: 0 0 6px #00bcd4;
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #00e0ff;
+    }
+
+    .stat-card span {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #ccc;
+      margin-top: 6px;
+      text-shadow: none;
+    }
+
+    .quick-links {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .quick-links a {
+      background: #00bcd4;
+      color: #fff;
+      padding: 14px 28px;
+      margin: 6px;
+      display: inline-block;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 0 15px #00bcd4;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .quick-links a:hover {
+      background-color: #009fb3;
+      box-shadow: 0 0 20px #009fb3;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      background-color: #0f2027;
+      color: #ccc;
+      box-shadow: inset 0 1px 3px rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <img class="logo" src="https://cdn2.vectorstock.com/i/1000x1000/99/26/va-monogram-logo-with-diamond-shape-and-ring-vector-32409926.jpg" alt="VAlute Logo" />
+    <nav>
+      <a href="dashboard.html">Home</a>
+      <a href="market.html">Market</a>
+      <a href="auto.html" class="active">Auto-Trading</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="transaction.html">Transactions</a>
+      <a href="settings.html">Settings</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="login.html">Logout</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>🤖 Manage Your Auto-Trading Bots</h1>
+
+    <!-- Bots Grid -->
+    <div class="bots-grid">
+      <div class="bot-card">
+        <div class="bot-header">
+          <div class="bot-name">AlphaX</div>
+          <div class="bot-status running">Running</div>
+        </div>
+        <div class="bot-info">
+          <p><strong>Pair:</strong> BTC/USD</p>
+          <p><strong>Strategy:</strong> RSI + MACD</p>
+          <p><strong>Last Run:</strong> May 16, 2025 - 08:45 AM</p>
+          <p><strong>Profit/Loss:</strong> +$1,250 (5.8%)</p>
+        </div>
+        <label class="bot-toggle toggle">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="bot-card">
+        <div class="bot-header">
+          <div class="bot-name">BetaWave</div>
+          <div class="bot-status paused">Paused</div>
+        </div>
+        <div class="bot-info">
+          <p><strong>Pair:</strong> ETH/USD</p>
+          <p><strong>Strategy:</strong> Moving Average Crossover</p>
+          <p><strong>Last Run:</strong> May 15, 2025 - 11:20 PM</p>
+          <p><strong>Profit/Loss:</strong> -$350 (-1.9%)</p>
+        </div>
+        <label class="bot-toggle toggle">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="bot-card">
+        <div class="bot-header">
+          <div class="bot-name">GammaGrid</div>
+          <div class="bot-status running">Running</div>
+        </div>
+        <div class="bot-info">
+          <p><strong>Pair:</strong> LTC/USD</p>
+          <p><strong>Strategy:</strong> Grid Trading</p>
+          <p><strong>Last Run:</strong> May 16, 2025 - 09:15 AM</p>
+          <p><strong>Profit/Loss:</strong> +$480 (3.1%)</p>
+        </div>
+        <label class="bot-toggle toggle">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Add New Bot Form -->
+    <div class="new-bot-form">
+      <h2>Create New Trading Bot</h2>
+      <form>
+        <label for="botName">Bot Name</label>
+        <input type="text" id="botName" name="botName" placeholder="Enter bot name" required />
+
+        <label for="tradingPair">Trading Pair</label>
+        <select id="tradingPair" name="tradingPair" required>
+          <option value="" disabled selected>Select pair</option>
+          <option value="BTC/USD">BTC/USD</option>
+          <option value="ETH/USD">ETH/USD</option>
+          <option value="LTC/USD">LTC/USD</option>
+          <option value="XRP/USD">XRP/USD</option>
+        </select>
+
+        <label for="strategy">Strategy</label>
+        <select id="strategy" name="strategy" required>
+          <option value="" disabled selected>Select strategy</option>
+          <option value="rsi_macd">RSI + MACD</option>
+          <option value="moving_average">Moving Average Crossover</option>
+          <option value="grid_trading">Grid Trading</option>
+          <option value="momentum">Momentum</option>
+        </select>
+
+        <button type="submit">Add Bot</button>
+      </form>
+    </div>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <h2 style="text-align:center; color:#00e0ff; margin-bottom: 30px; text-shadow: 0 0 8px #00bcd4;">Overall Bot Performance</h2>
+      <div class="stats-cards">
+        <div class="stat-card">
+          3<br />
+          <span>Active Bots</span>
+        </div>
+        <div class="stat-card">
+          +$1,380<br />
+          <span>Net Profit (Last 7 Days)</span>
+        </div>
+        <div class="stat-card">
+          92%<br />
+          <span>Average Bot Uptime</span>
+        </div>
+        <div class="stat-card">
+          15<br />
+          <span>Trades Executed (Last 24h)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Links -->
+    <div class="quick-links">
+      <a href="market.html">Explore Market</a>
+      <a href="portfolio.html">View Portfolio</a>
+      <a href="settings.html">Bot Settings</a>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 VAlute. All rights reserved.
+  </footer>
+  
+</body>
+</html>
+
+

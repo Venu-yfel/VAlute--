@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VAlute - Portfolio</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+    }
+
+    header {
+      background: #1e3c72;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+    }
+
+    .logo {
+      height: 50px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a.active,
+    nav a:hover {
+      text-decoration: underline;
+      color: #00e0ff;
+    }
+
+    main.dashboard-container {
+      padding: 30px 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .welcome {
+      font-size: 30px;
+      margin-bottom: 25px;
+      color: #00e0ff;
+      font-weight: 700;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 224, 255, 0.6);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: #00e0ff;
+      font-weight: 600;
+    }
+
+    .card p {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .positive {
+      color: #00ff99;
+      font-weight: 700;
+    }
+
+    .negative {
+      color: #ff4d4d;
+      font-weight: 700;
+    }
+
+    .allocation-list {
+      margin-top: 10px;
+    }
+
+    .allocation-item {
+      margin-bottom: 15px;
+    }
+
+    .allocation-item h4 {
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #00e0ff;
+    }
+
+    .bar {
+      height: 15px;
+      border-radius: 10px;
+      background-color: rgba(255,255,255,0.15);
+      overflow: hidden;
+    }
+
+    .bar.crypto {
+      width: 45%;
+      background: linear-gradient(90deg, #f7931a, #f2a900);
+    }
+
+    .bar.stocks {
+      width: 35%;
+      background: linear-gradient(90deg, #0077cc, #005fa3);
+    }
+
+    .bar.commodities {
+      width: 10%;
+      background: linear-gradient(90deg, #a0522d, #8b4513);
+    }
+
+    .bar.cash {
+      width: 10%;
+      background: linear-gradient(90deg, #00cc99, #009966);
+    }
+
+    canvas {
+      background-color: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 30px;
+      max-height: 350px;
+    }
+
+    .activity-log {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    .activity-log li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .summary {
+      margin-top: 30px;
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .highlights {
+      margin-top: 40px;
+    }
+
+    .highlights h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #00e5ff;
+    }
+
+    .highlights ul {
+      list-style: disc;
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      background-color: #0f2027;
+      color: #ccc;
+    }
+
+    /* Quick Links Section */
+    .quick-links {
+      margin-top: 25px;
+    }
+
+    .quick-links a {
+      background: #00bcd4;
+      color: #fff;
+      padding: 12px 24px;
+      margin: 6px 8px 6px 0;
+      display: inline-block;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 5px 15px rgba(0,188,212,0.4);
+    }
+
+    .quick-links a:hover {
+      background-color: #009fb3;
+      box-shadow: 0 8px 25px rgba(0,159,179,0.7);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://cdn2.vectorstock.com/i/1000x1000/99/26/va-monogram-logo-with-diamond-shape-and-ring-vector-32409926.jpg" alt="VAlute Logo" class="logo" />
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="market.html">Market</a>
+      <a href="auto.html">Manage Auto-Bots</a>
+      <a href="portfolio.html" class="active">Portfolio</a>
+      <a href="transaction.html">Transactions</a>
+      <a href="settings.html">Settings</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="login.html">Logout</a>
+    </nav>
+  </header>
+
+  <main class="dashboard-container">
+    <div class="welcome">Welcome back, Investor!</div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Total Balance</h3>
+        <p>$54,260.75</p>
+      </div>
+      <div class="card">
+        <h3>24H Change</h3>
+        <p class="positive">+3.14%</p>
+      </div>
+      <div class="card">
+        <h3>Risk Level</h3>
+        <p>Moderate</p>
+      </div>
+      <div class="card">
+        <h3>Monthly Return</h3>
+        <p class="positive">+7.5%</p>
+      </div>
+    </div>
+
+    <section>
+      <h2>Asset Allocation</h2>
+      <div class="allocation-list">
+        <div class="allocation-item">
+          <h4>Cryptocurrency - 45%</h4>
+          <div class="bar crypto"></div>
+        </div>
+        <div class="allocation-item">
+          <h4>Stocks - 35%</h4>
+          <div class="bar stocks"></div>
+        </div>
+        <div class="allocation-item">
+          <h4>Commodities - 10%</h4>
+          <div class="bar commodities"></div>
+        </div>
+        <div class="allocation-item">
+          <h4>Cash - 10%</h4>
+          <div class="bar cash"></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Performance Chart</h2>
+      <canvas id="portfolioChart"></canvas>
+    </section>
+
+    <section>
+      <h2>Recent Activity</h2>
+      <ul class="activity-log">
+        <li>+ Bought 0.5 BTC @ $63,200</li>
+        <li>- Sold 10 AAPL @ $197.50</li>
+        <li>+ Bought 2 ETH @ $3,000</li>
+        <li>+ Deposited $5,000 to account</li>
+      </ul>
+    </section>
+
+    <section class="summary">
+      <h2>Summary</h2>
+      <p>Your portfolio is diversified across crypto, stocks, and commodities. Overall growth this month is <strong>+7.5%</strong>. Great job staying consistent with your investment strategy!</p>
+    </section>
+
+    <section class="highlights">
+      <h2>Investment Highlights</h2>
+      <ul>
+        <li>Bitcoin surged 8% last week, strengthening crypto allocation.</li>
+        <li>Strong tech stock performance boosted portfolio returns.</li>
+        <li>Commodities remain stable despite market fluctuations.</li>
+        <li>Keep an eye on upcoming earnings reports in the stock market.</li>
+      </ul>
+    </section>
+
+    <section class="quick-links">
+      <a href="market.html">View Market</a>
+      <a href="auto.html">Manage Auto-Bots</a>
+      <a href="transaction.html">Transaction History</a>
+      <a href="settings.html">Account Settings</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 VAlute Inc. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const ctx = document.getElementById('portfolioChart').getContext('2d');
+    const portfolioChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [{
+          label: 'Portfolio Value ($)',
+          data: [47200, 48600, 50200, 54260],
+          borderColor: '#00e0ff',
+          backgroundColor: 'rgba(0, 224, 255, 0.3)',
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#00bcd4',
+          pointRadius: 5,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: false, ticks: { color: 'white' } },
+          x: { ticks: { color: 'white' } }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: 'white'
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

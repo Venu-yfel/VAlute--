@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | VAlute</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+    }
+
+    header {
+      background: #1e3c72;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+    }
+
+    .logo {
+      height: 50px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .dashboard-container {
+      padding: 30px 50px;
+    }
+
+    .welcome {
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: #00e0ff;
+    }
+
+    .card p {
+      font-size: 16px;
+    }
+
+    .quick-links {
+      margin-top: 20px;
+    }
+
+    .quick-links a {
+      background: #00bcd4;
+      color: #fff;
+      padding: 12px 24px;
+      margin: 6px;
+      display: inline-block;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .quick-links a:hover {
+      background-color: #009fb3;
+    }
+
+    canvas {
+      background-color: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 30px;
+    }
+
+    .highlights {
+      margin-top: 40px;
+    }
+
+    .highlights h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #00e5ff;
+    }
+
+    .highlights ul {
+      list-style: disc;
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      background-color: #0f2027;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <img class="logo" src="https://cdn2.vectorstock.com/i/1000x1000/99/26/va-monogram-logo-with-diamond-shape-and-ring-vector-32409926.jpg" alt="VAlute Logo" />
+    <nav>
+      <a href="dashboard.html">Home</a>
+      <a href="market.html">Market</a>
+      <a href="auto.html">Auto-Trading</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="transaction.html">Transactions</a>
+      <a href="settings.html">Settings</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="login.html">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Dashboard -->
+  <div class="dashboard-container">
+    <div class="welcome">
+      👋 Welcome back, Trader! Here's your latest financial overview.
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="cards">
+      <div class="card">
+        <h3>Total Balance</h3>
+        <p>$50,000.45</p>
+      </div>
+      <div class="card">
+        <h3>Today's Gain</h3>
+        <p>+$2,140.75 (+3.8%)</p>
+      </div>
+      <div class="card">
+        <h3>Auto-Trading Status</h3>
+        <p>Enabled · 3 Bots Running</p>
+      </div>
+      <div class="card">
+        <h3>Watchlist</h3>
+        <p>ETH, TSLA, AAPL, ADA</p>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="quick-links">
+      <a href="market.html">Explore Market</a>
+      <a href="auto.html">Manage Auto-Bots</a>
+      <a href="portfolio.html" class="active">Portfolio</a>
+      <a href="transaction.html">Recent Transactions</a>
+      <a href="settings.html">Account Settings</a>
+    </div>
+
+    <!-- Market Chart -->
+    <canvas id="marketChart" height="120"></canvas>
+
+    <!-- Highlights -->
+    <div class="highlights">
+      <h2>📌 Recent Highlights</h2>
+      <ul>
+        <li>Bitcoin surged past $29,000 amid market optimism.</li>
+        <li>Auto-trading bot "AlphaX" executed 14 trades today.</li>
+        <li>Ethereum showing strong resistance at $3,100.</li>
+        <li>Your portfolio outperformed the market by 2.6% this week.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 VAlute Inc. All rights reserved.
+  </footer>
+
+  <!-- Chart Script -->
+  <script>
+    const ctx = document.getElementById('marketChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+        datasets: [{
+          label: 'Portfolio Value',
+          data: [54000, 55000, 55400, 57000, 58320],
+          borderColor: '#00e0ff',
+          backgroundColor: 'rgba(0,224,255,0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: '#fff' }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#ccc' },
+            grid: { color: '#444' }
+          },
+          y: {
+            ticks: { color: '#ccc' },
+            grid: { color: '#444' }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
+

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Settings - VAlute</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+    }
+
+    header {
+      background: #1e3c72;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+    }
+
+    .logo {
+      height: 50px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover,
+    nav a.active {
+      text-decoration: underline;
+      color: #00e0ff;
+    }
+
+    main {
+      padding: 30px 50px;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #00e5ff;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #00e5ff;
+      font-size: 24px;
+    }
+
+    h3 {
+      color: #00e0ff;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input, select {
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background-color: #1c2c38;
+      color: white;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    .btn {
+      background-color: #00bcd4;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #009fb3;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      background-color: #0f2027;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://cdn2.vectorstock.com/i/1000x1000/99/26/va-monogram-logo-with-diamond-shape-and-ring-vector-32409926.jpg"
+         alt="VAlute Logo" class="logo" />
+    <nav>
+      <a href="market.html">Market</a>
+      <a href="auto.html">Manage Auto-Bots</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="transaction.html">Transactions</a>
+      <a href="settings.html" class="active">Settings</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="login.html">Logout</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Account Settings</h1>
+    <p>Manage your account security, preferences, and personal details.</p>
+
+    <h2>Profile Information</h2>
+    <form id="profileForm">
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" name="fullName" placeholder="John Doe" required />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="john@example.com" required />
+
+      <button type="submit" class="btn">Update Profile</button>
+    </form>
+
+    <h2>Security</h2>
+    <form id="securityForm">
+      <label for="currentPassword">Current Password</label>
+      <input type="password" id="currentPassword" name="currentPassword" placeholder="••••••••" required />
+
+      <label for="newPassword">New Password</label>
+      <input type="password" id="newPassword" name="newPassword" placeholder="••••••••" required />
+
+      <label for="confirmPassword">Confirm New Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required />
+
+      <button type="submit" class="btn">Change Password</button>
+    </form>
+
+    <div class="two-fa-section">
+      <h3>Two-Factor Authentication (2FA)</h3>
+      <p>Enable 2FA to add an extra layer of security to your account.</p>
+      <button id="enable2fa" class="btn">Enable 2FA</button>
+    </div>
+
+    <h2>Preferences</h2>
+    <form id="preferencesForm">
+      <label for="themeSelect">Theme</label>
+      <select id="themeSelect" name="themeSelect">
+        <option value="green" selected>Green (Default)</option>
+        <option value="blue">Blue</option>
+        <option value="dark">Dark Mode</option>
+      </select>
+
+      <label for="currencySelect">Default Currency</label>
+      <select id="currencySelect" name="currencySelect">
+        <option value="USD" selected>USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+        <option value="JPY">JPY</option>
+      </select>
+
+      <button type="submit" class="btn">Save Preferences</button>
+    </form>
+
+    <h2>Notification Preferences</h2>
+    <form id="notificationSettingsForm">
+      <label><input type="checkbox" name="priceAlerts" checked> Price Alerts</label>
+      <label><input type="checkbox" name="marketNews" checked> Market News</label>
+      <label><input type="checkbox" name="systemUpdates" checked> System Updates</label>
+      <label><input type="checkbox" name="securityAlerts" checked> Security Alerts</label>
+      <button type="submit" class="btn">Save Notifications</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>© 2025 VAlute Inc. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('profileForm').addEventListener('submit', e => {
+      e.preventDefault();
+      alert('Profile updated successfully!');
+    });
+
+    document.getElementById('securityForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const newPass = document.getElementById('newPassword').value;
+      const confirmPass = document.getElementById('confirmPassword').value;
+      if (newPass !== confirmPass) {
+        alert('New passwords do not match!');
+        return;
+      }
+      alert('Password changed successfully!');
+    });
+
+    document.getElementById('enable2fa').addEventListener('click', () => {
+      alert('2FA enabled! Use your authenticator app to complete setup.');
+    });
+
+    document.getElementById('preferencesForm').addEventListener('submit', e => {
+      e.preventDefault();
+      alert('Preferences saved!');
+    });
+
+    document.getElementById('notificationSettingsForm').addEventListener('submit', e => {
+      e.preventDefault();
+      alert('Notification settings updated!');
+    });
+  </script>
+</body>
+</html>
+
+  

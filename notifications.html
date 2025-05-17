@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notifications - VAlute</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #e0f7fa;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #1e3c72;
+      padding: 1rem 0;
+      color: white;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .logo {
+      height: 50px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover, .nav-links .active {
+      color: #00e0ff;
+    }
+
+    .main-section {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #00e5ff;
+    }
+
+    .notifications-list {
+      margin-top: 2rem;
+    }
+
+    .notification {
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 4px solid #00bcd4;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .notification.new {
+      border-left-color: #00cc99;
+    }
+
+    .notification h3 {
+      margin-bottom: 0.3rem;
+      color: #00e0ff;
+    }
+
+    .notification time {
+      font-size: 0.85rem;
+      color: #ccc;
+    }
+
+    .notification-settings {
+      margin-top: 3rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .notification-settings h2 {
+      margin-bottom: 1rem;
+      color: #00e5ff;
+    }
+
+    .notification-settings label {
+      display: block;
+      margin: 0.5rem 0;
+      color: #e0f7fa;
+    }
+
+    .btn {
+      background: #00bcd4;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 5px;
+      margin-top: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #009fb3;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding: 1rem 0;
+      background: #1e3c72;
+      text-align: center;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="https://cdn2.vectorstock.com/i/1000x1000/99/26/va-monogram-logo-with-diamond-shape-and-ring-vector-32409926.jpg" alt="VAlute Logo" class="logo" />
+      <nav>
+        <ul class="nav-links">
+          <li><a href="market.html">Market</a></li>
+          <li><a href="auto.html">Manage Auto-Bots</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="transaction.html">Transactions</a></li>
+          <li><a href="settings.html">Settings</a></li>
+          <li><a href="notifications.html" class="active">Notifications</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-section">
+    <h1>🔔 Notifications</h1>
+    <p>Stay updated with your latest trading alerts, platform updates, and important messages.</p>
+
+    <section class="notifications-list">
+      <article class="notification new">
+        <h3>📊 Price Alert: BTC/USD</h3>
+        <p>Bitcoin price crossed $35,000! Time to review your portfolio.</p>
+        <time datetime="2025-05-15T10:30">May 15, 2025 - 10:30 AM</time>
+      </article>
+
+      <article class="notification">
+        <h3>🛠️ New Feature Released</h3>
+        <p>Smart portfolio analytics tool is now live. Check it out in your dashboard.</p>
+        <time datetime="2025-05-14T14:00">May 14, 2025 - 2:00 PM</time>
+      </article>
+
+      <article class="notification">
+        <h3>🔐 Security Reminder</h3>
+        <p>Enable two-factor authentication (2FA) for enhanced account protection.</p>
+        <time datetime="2025-05-13T09:15">May 13, 2025 - 9:15 AM</time>
+      </article>
+
+      <article class="notification">
+        <h3>⚙️ Scheduled Maintenance</h3>
+        <p>Platform maintenance on May 20, 2025, from 1 AM to 3 AM UTC.</p>
+        <time datetime="2025-05-12T16:45">May 12, 2025 - 4:45 PM</time>
+      </article>
+    </section>
+
+    <section class="notification-settings">
+      <h2>🔧 Notification Settings</h2>
+      <p>Select which alerts you'd like to receive:</p>
+      <form id="notificationSettingsForm">
+        <label><input type="checkbox" name="priceAlerts" checked> Price Alerts</label>
+        <label><input type="checkbox" name="news" checked> Market News</label>
+        <label><input type="checkbox" name="system" checked> System Updates</label>
+        <label><input type="checkbox" name="security" checked> Security Alerts</label>
+        <button type="submit" class="btn">💾 Save Settings</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 VAlute Inc. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('notificationSettingsForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('✅ Notification preferences saved!');
+    });
+  </script>
+</body>
+</html>
+

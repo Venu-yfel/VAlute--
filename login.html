@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login | VAlute</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+    :root {
+      --primary: #00bcd4;
+      --primary-dark: #0097a7;
+      --background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      --input-bg: rgba(255, 255, 255, 0.07);
+      --glass-bg: rgba(255, 255, 255, 0.12);
+      --text-light: #e0f7fa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--background);
+      color: white;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 30px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 188, 212, 0.3);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      0% {opacity: 0; transform: scale(0.9);}
+      100% {opacity: 1; transform: scale(1);}
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      display: block;
+      border-radius: 50%;
+      animation: float 4s ease-in-out infinite;
+      box-shadow: 0 0 12px var(--primary);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: var(--text-light);
+      font-weight: 700;
+      font-size: 26px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #b2ebf2;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 10px;
+      background: var(--input-bg);
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      background: rgba(0, 188, 212, 0.1);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      margin-top: 5px;
+    }
+
+    .login-btn:hover {
+      background: var(--primary-dark);
+      transform: scale(1.03);
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+      color: #b2ebf2;
+    }
+
+    .form-footer a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .form-footer a:hover {
+      color: #00e5ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <img class="logo" src="https://cdn2.vectorstock.com/i/1000x1000/99/26/va-monogram-logo-with-diamond-shape-and-ring-vector-32409926.jpg" alt="VAlute Logo">
+    <h2>Login to VAlute</h2>
+    <form id="loginForm" onsubmit="return validateLogin()">
+      <div class="form-group">
+        <label for="username">Email or Username</label>
+        <input type="text" id="username" placeholder="Enter your username" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required />
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+    <div class="form-footer">
+      <p>Don't have an account? <a href="#">Sign up</a></p>
+      <p><a href="#">Forgot password?</a></p>
+    </div>
+  </div>
+
+  <script>
+    function validateLogin() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if ((username === "user123" || username === "admin") && password === "valute2025") {
+        window.location.href = "dashboard.html";
+        return false;
+      } else {
+        alert("Invalid login credentials. Try again.");
+        return false;
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
