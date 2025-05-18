@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VAlute - Advanced Market Overview</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VAlute - Market Overview</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* Body and general */
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -15,10 +15,10 @@
 
     header {
       background: #1e3c72;
+      padding: 15px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 40px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.7);
     }
 
@@ -27,36 +27,35 @@
     }
 
     nav a {
-      margin: 0 15px;
-      color: #fff;
+      color: white;
+      margin: 0 12px;
       text-decoration: none;
       font-weight: 500;
-      transition: color 0.3s ease;
     }
 
     nav a:hover {
-      color: #00e0ff;
       text-decoration: underline;
+      color: #00e0ff;
     }
 
     main {
-      padding: 30px 50px;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: auto;
+      padding: 40px 20px;
     }
 
     .page-title {
-      font-size: 3rem;
+      font-size: 2.8rem;
+      text-align: center;
       margin-bottom: 10px;
       color: #00e0ff;
-      text-align: center;
-      text-shadow: 0 0 10px #00bcd4;
+      text-shadow: 0 0 8px #00bcd4;
     }
 
-    .subtext {
-      font-size: 1.1rem;
-      margin-bottom: 40px;
-      text-align: center;
+    .section-title {
+      font-size: 1.5rem;
+      margin-top: 40px;
+      margin-bottom: 10px;
       color: #aad4ff;
     }
 
@@ -64,273 +63,262 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 25px;
-      margin-bottom: 40px;
     }
 
     .card {
-      background-color: rgba(255, 255, 255, 0.08);
-      padding: 25px;
-      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      padding: 20px;
+      border-radius: 16px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: default;
+      transition: 0.3s;
     }
 
     .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 25px rgba(0, 224, 255, 0.7);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 224, 255, 0.6);
     }
 
     .card h3 {
-      margin-bottom: 10px;
       color: #00e0ff;
-      font-weight: 700;
-      font-size: 1.6rem;
+      margin-bottom: 10px;
     }
 
     .card p {
-      font-size: 1rem;
-      line-height: 1.5;
       color: #c2e7ff;
+      margin: 5px 0;
     }
 
-    .change-positive {
-      color: #4caf50;
-      font-weight: 600;
-    }
-
-    .change-negative {
-      color: #f44336;
-      font-weight: 600;
-    }
-
-    .refresh-btn {
-      display: inline-block;
-      background: #00bcd4;
-      color: white;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.9rem;
+    .buy-btn, .sell-btn {
+      padding: 6px 12px;
+      margin-right: 8px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
       cursor: pointer;
-      user-select: none;
-      transition: background 0.3s ease;
-      margin-left: 12px;
     }
 
-    .refresh-btn:hover {
-      background: #009fb3;
+    .buy-btn {
+      background: #4caf50;
+      color: white;
+    }
+
+    .sell-btn {
+      background: #f44336;
+      color: white;
     }
 
     canvas {
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 14px;
-      padding: 20px;
       margin-top: 20px;
-      width: 100% !important;
-      height: 220px !important;
-      box-shadow: 0 0 15px rgba(0, 224, 255, 0.4);
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(0,224,255,0.4);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      display: none;
+      z-index: 999;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #203a43;
+      padding: 30px;
+      border-radius: 14px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,224,255,0.3);
+    }
+
+    .modal-content input {
+      width: 80%;
+      padding: 8px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+    }
+
+    .modal-content button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      background: #00bcd4;
+      color: white;
+      cursor: pointer;
     }
 
     footer {
-      margin-top: 60px;
-      padding: 20px;
       text-align: center;
-      font-size: 14px;
-      background-color: #0f2027;
+      padding: 20px;
       color: #ccc;
-      box-shadow: inset 0 1px 3px rgba(255,255,255,0.1);
+      margin-top: 50px;
+      font-size: 14px;
+      background: #0f2027;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-  <header>
-    <img src="https://cdn2.vectorstock.com/i/1000x1000/99/26/va-monogram-logo-with-diamond-shape-and-ring-vector-32409926.jpg" alt="VAlute Logo" class="logo" />
-    <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="market.html" style="text-decoration: underline;">Market</a>
-      <a href="auto.html">Manage Auto-Bots</a>
-      <a href="portfolio.html">Portfolio</a>
-      <a href="transaction.html">Transactions</a>
-      <a href="notifications.html">Notifications</a>
-      <a href="settings.html">Settings</a>
-      <a href="login.html">Logout</a>
-    </nav>
-  </header>
+<header>
+  <img src="https://cdn2.vectorstock.com/i/1000x1000/99/26/va-monogram-logo-with-diamond-shape-and-ring-vector-32409926.jpg" class="logo" alt="VAlute Logo" />
+  <nav>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="market.html" style="text-decoration: underline;">Market</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="transactions.html">Transactions</a>
+    <a href="settings.html">Settings</a>
+    <a href="login.html">Logout</a>
+  </nav>
+</header>
 
-  <main>
-    <h1 class="page-title">📈 Advanced Market Overview</h1>
-    <p class="subtext">Real-time updates on stocks, cryptocurrencies, and forex pairs with interactive charts and key stats.</p>
+<main>
+  <h1 class="page-title">📊 Market Insights & Trading</h1>
 
-    <!-- Stocks Section -->
-    <section>
-      <h2>
-        Top Stocks
-        <span class="refresh-btn" onclick="fetchMarketData('stocks')">Refresh</span>
-      </h2>
-      <div class="cards" id="stocks-section">
-        <div class="card">
-          <h3>Apple Inc. (AAPL)</h3>
-          <p>Price: $189.44</p>
-          <p>Change: <span class="change-positive">+1.35%</span></p>
-          <p>Market Cap: $3.05T</p>
-          <p>Volume: 25.3M</p>
-        </div>
-        <div class="card">
-          <h3>Microsoft Corp (MSFT)</h3>
-          <p>Price: $322.11</p>
-          <p>Change: <span class="change-negative">-0.87%</span></p>
-          <p>Market Cap: $2.43T</p>
-          <p>Volume: 18.6M</p>
-        </div>
-      </div>
-      <canvas id="stocksChart"></canvas>
-    </section>
+  <!-- Stocks Section -->
+  <h2 class="section-title">Top Stocks</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Apple Inc. (AAPL)</h3>
+      <p>Price: $189.44</p>
+      <p>Change: <span style="color: #4caf50;">+1.2%</span></p>
+      <button class="buy-btn" onclick="openModal('Buy AAPL')">Buy</button>
+      <button class="sell-btn" onclick="openModal('Sell AAPL')">Sell</button>
+    </div>
+    <div class="card">
+      <h3>Microsoft Corp (MSFT)</h3>
+      <p>Price: $322.11</p>
+      <p>Change: <span style="color: #f44336;">-0.5%</span></p>
+      <button class="buy-btn" onclick="openModal('Buy MSFT')">Buy</button>
+      <button class="sell-btn" onclick="openModal('Sell MSFT')">Sell</button>
+    </div>
+  </div>
+  <canvas id="stocksChart" height="200"></canvas>
 
-    <!-- Crypto Section -->
-    <section>
-      <h2>
-        Top Cryptocurrencies
-        <span class="refresh-btn" onclick="fetchMarketData('crypto')">Refresh</span>
-      </h2>
-      <div class="cards" id="crypto-section">
-        <div class="card">
-          <h3>Bitcoin (BTC)</h3>
-          <p>Price: $61,203</p>
-          <p>Change: <span class="change-positive">+2.5%</span></p>
-          <p>Market Cap: $1.14T</p>
-          <p>24h Volume: $32B</p>
-        </div>
-        <div class="card">
-          <h3>Ethereum (ETH)</h3>
-          <p>Price: $3,145</p>
-          <p>Change: <span class="change-positive">+1.9%</span></p>
-          <p>Market Cap: $376B</p>
-          <p>24h Volume: $20B</p>
-        </div>
-      </div>
-      <canvas id="cryptoChart"></canvas>
-    </section>
+  <!-- Crypto Section -->
+  <h2 class="section-title">Top Cryptocurrencies</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Bitcoin (BTC)</h3>
+      <p>Price: $61,203</p>
+      <p>Change: <span style="color: #4caf50;">+2.5%</span></p>
+      <button class="buy-btn" onclick="openModal('Buy BTC')">Buy</button>
+      <button class="sell-btn" onclick="openModal('Sell BTC')">Sell</button>
+    </div>
+    <div class="card">
+      <h3>Ethereum (ETH)</h3>
+      <p>Price: $3,145</p>
+      <p>Change: <span style="color: #4caf50;">+1.9%</span></p>
+      <button class="buy-btn" onclick="openModal('Buy ETH')">Buy</button>
+      <button class="sell-btn" onclick="openModal('Sell ETH')">Sell</button>
+    </div>
+  </div>
+  <canvas id="cryptoChart" height="200"></canvas>
 
-    <!-- Forex Section -->
-    <section>
-      <h2>
-        Forex Pairs
-        <span class="refresh-btn" onclick="fetchMarketData('forex')">Refresh</span>
-      </h2>
-      <div class="cards" id="forex-section">
-        <div class="card">
-          <h3>EUR/USD</h3>
-          <p>Rate: 1.088</p>
-          <p>Change: <span class="change-positive">+0.12%</span></p>
-          <p>Daily Range: 1.085 - 1.090</p>
-          <p>Volume: $1.2B</p>
-        </div>
-        <div class="card">
-          <h3>USD/JPY</h3>
-          <p>Rate: 149.78</p>
-          <p>Change: <span class="change-negative">-0.45%</span></p>
-          <p>Daily Range: 149.50 - 150.10</p>
-          <p>Volume: $800M</p>
-        </div>
-      </div>
-      <canvas id="forexChart"></canvas>
-    </section>
-  </main>
+  <!-- Forex Section -->
+  <h2 class="section-title">Forex Pairs</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>EUR/USD</h3>
+      <p>Rate: 1.088</p>
+      <p>Change: <span style="color: #4caf50;">+0.12%</span></p>
+      <button class="buy-btn" onclick="openModal('Buy EUR/USD')">Buy</button>
+      <button class="sell-btn" onclick="openModal('Sell EUR/USD')">Sell</button>
+    </div>
+    <div class="card">
+      <h3>USD/JPY</h3>
+      <p>Rate: 149.78</p>
+      <p>Change: <span style="color: #f44336;">-0.45%</span></p>
+      <button class="buy-btn" onclick="openModal('Buy USD/JPY')">Buy</button>
+      <button class="sell-btn" onclick="openModal('Sell USD/JPY')">Sell</button>
+    </div>
+  </div>
+  <canvas id="forexChart" height="200"></canvas>
+</main>
 
-  <footer>
-    <p>© 2025 VAlute Inc. All rights reserved.</p>
-  </footer>
+<!-- Modal -->
+<div class="modal" id="tradeModal">
+  <div class="modal-content">
+    <h3 id="modalTitle">Trade</h3>
+    <input type="number" placeholder="Quantity" />
+    <button onclick="closeModal()">Confirm</button>
+  </div>
+</div>
 
-  <script>
-    // Chart.js charts with example data
-    const stocksCtx = document.getElementById('stocksChart').getContext('2d');
-    const stocksChart = new Chart(stocksCtx, {
-      type: 'line',
-      data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-        datasets: [{
-          label: 'Apple Inc. (AAPL)',
-          data: [185, 187, 188, 190, 189],
-          borderColor: '#00e0ff',
-          backgroundColor: 'rgba(0, 224, 255, 0.3)',
-          tension: 0.4,
-          fill: true,
-          pointRadius: 4,
-          pointBackgroundColor: '#00bcd4',
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { labels: {color: 'white'} }
-        },
-        scales: {
-          x: { ticks: { color: '#aad4ff' } },
-          y: { ticks: { color: '#aad4ff' } }
-        }
-      }
-    });
+<footer>
+  <p>© 2025 VAlute Inc. All rights reserved.</p>
+</footer>
 
-    const cryptoCtx = document.getElementById('cryptoChart').getContext('2d');
-    const cryptoChart = new Chart(cryptoCtx, {
-      type: 'bar',
-      data: {
-        labels: ['BTC', 'ETH', 'BNB', 'ADA', 'SOL'],
-        datasets: [{
-          label: 'Price ($)',
-          data: [61203, 3145, 400, 0.65, 143],
-          backgroundColor: ['#42a5f5', '#29b6f6', '#26c6da', '#00acc1', '#00838f']
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false },
-        },
-        scales: {
-          x: { ticks: { color: '#aad4ff' } },
-          y: { ticks: { color: '#aad4ff' } }
-        }
-      }
-    });
-
-    const forexCtx = document.getElementById('forexChart').getContext('2d');
-    const forexChart = new Chart(forexCtx, {
-      type: 'line',
-      data: {
-        labels: ['9AM', '12PM', '3PM', '6PM', '9PM'],
-        datasets: [{
-          label: 'EUR/USD',
-          data: [1.085, 1.087, 1.088, 1.089, 1.088],
-          borderColor: '#00e0ff',
-          backgroundColor: 'rgba(0, 224, 255, 0.3)',
-          tension: 0.3,
-          fill: true,
-          pointRadius: 3,
-          pointBackgroundColor: '#00bcd4',
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { labels: {color: 'white'} }
-        },
-        scales: {
-          x: { ticks: { color: '#aad4ff' } },
-          y: { ticks: { color: '#aad4ff' } }
-        }
-      }
-    });
-
-    // Dummy refresh function — here you would fetch live data from API
-    function fetchMarketData(type) {
-      alert('Refreshing ' + type + ' data... (this would fetch new data)');
-      // Simulate data update and re-render charts here
+<script>
+  const ctxStocks = document.getElementById('stocksChart').getContext('2d');
+  new Chart(ctxStocks, {
+    type: 'line',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      datasets: [{
+        label: 'AAPL',
+        data: [185, 187, 188, 190, 189],
+        borderColor: '#4caf50',
+        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: { plugins: { legend: { labels: { color: '#aad4ff' } } },
+      scales: { x: { ticks: { color: '#aad4ff' } }, y: { ticks: { color: '#aad4ff' } } }
     }
-  </script>
+  });
+
+  const ctxCrypto = document.getElementById('cryptoChart').getContext('2d');
+  new Chart(ctxCrypto, {
+    type: 'bar',
+    data: {
+      labels: ['BTC', 'ETH'],
+      datasets: [{
+        label: 'Price ($)',
+        data: [61203, 3145],
+        backgroundColor: ['#4caf50', '#2196f3']
+      }]
+    },
+    options: { plugins: { legend: { labels: { color: '#aad4ff' } } },
+      scales: { x: { ticks: { color: '#aad4ff' } }, y: { ticks: { color: '#aad4ff' } } }
+    }
+  });
+
+  const ctxForex = document.getElementById('forexChart').getContext('2d');
+  new Chart(ctxForex, {
+    type: 'line',
+    data: {
+      labels: ['9AM', '12PM', '3PM', '6PM', '9PM'],
+      datasets: [{
+        label: 'EUR/USD',
+        data: [1.085, 1.087, 1.088, 1.089, 1.088],
+        borderColor: '#00e0ff',
+        backgroundColor: 'rgba(0, 224, 255, 0.2)',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: { plugins: { legend: { labels: { color: '#aad4ff' } } },
+      scales: { x: { ticks: { color: '#aad4ff' } }, y: { ticks: { color: '#aad4ff' } } }
+    }
+  });
+
+  // Modal Functions
+  function openModal(title) {
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('tradeModal').style.display = 'flex';
+  }
+  function closeModal() {
+    document.getElementById('tradeModal').style.display = 'none';
+  }
+</script>
 
 </body>
 </html>
